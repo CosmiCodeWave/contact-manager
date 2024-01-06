@@ -1,26 +1,50 @@
-const {constants}=require("../constants"); 
+const { constants } = require("../constants");
 
-const errorHandler =(err,req,res,next) => {
- const statusCode = res.statusCode ? res.statusCode : 500 ;
- switch (statusCode) {
+const errorHandler = (err, req, res, next) => {
+  const statusCode = res.statusCode ? res.statusCode : 500;
+  switch (statusCode) {
     case constants.VALIDATION_ERROR:
-        res.json({title:"Validation failed",message: err.message, stackTrace: err.stack});
-        break;
+      res.json({
+        title: "Validation failed",
+        message: err.message,
+        stackTrace: err.stack,
+      });
+      break;
     case constants.NOT_FOUND:
-        res.json({title:"Not found",message: err.message, stackTrace: err.stack});
-        break;
+      res.json({
+        title: "Not found",
+        message: err.message,
+        stackTrace: err.stack,
+      });
+      break;
     case constants.UNAUTHORIZED:
-        res.json({title:"unauthorized",message: err.message, stackTrace: err.stack});
-        break;
-    case constants.FORBIDOEN:
-        res.json({title:"forbidoen",message: err.message, stackTrace: err.stack});
-        break;
+      res.json({
+        title: "Unauthorized",
+        message: err.message,
+        stackTrace: err.stack,
+      });
+      break;
+    case constants.FORBIDDEN:
+      res.json({
+        title: "Forbidden",
+        message: err.message,
+        stackTrace: err.stack,
+      });
+      break;
     case constants.SERVER_ERROR:
-        res.json({title:"server_error",message: err.message, stackTrace: err.stack});
+      res.json({
+        title: "Server error",
+        message: err.message,
+        stackTrace: err.stack,
+      });
+      break;
     default:
-        console.log("no Error, all OK ");
-        break;
- } 
+      console.log("No error, all OK");
+      break;
+  }
+
+  // Always call next to pass the error to the next middleware
+  next(err);
 };
- 
+
 module.exports = errorHandler;
